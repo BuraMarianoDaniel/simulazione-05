@@ -1,0 +1,19 @@
+<div class="container mx-auto my-4 px-4">
+  <div *ngIf="createLoyaltyCardForm" [formGroup]="createLoyaltyCardForm">
+    <div class="flex flex-wrap w-full sm:w-2/3 lg:w-1/2 mx-auto">
+      <app-form-control for="name" label="Nome" controlName="name" class="flex-auto mx-3">
+        <input formControlName="name" [ngClass]="{'input-error': createLoyaltyCardForm.get('name')?.dirty && createLoyaltyCardForm.get('name')?.invalid}"
+               id="name" type="text" placeholder="Inserire nome" class="input input-bordered w-full" />
+      </app-form-control>
+      <app-form-control for="surname" label="Cognome" controlName="surname" class="flex-auto mx-3">
+        <input formControlName="surname" [ngClass]="{'input-error': createLoyaltyCardForm.get('surname')?.dirty && createLoyaltyCardForm.get('surname')?.invalid}"
+               id="surname" type="text" placeholder="Inserire Cognome" class="input input-bordered w-full"  />
+      </app-form-control>
+    </div>
+    <div class="flex flex-wrap w-full sm:w-2/3 lg:w-1/2 mx-auto">
+      <div class="flex-auto mx-3">
+        <button [disabled]="createLoyaltyCardForm.invalid" class="btn btn-primary w-full" (click)="addLoyaltyCard()">Aggiungi</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="m-3">
+  <div *ngIf="loyaltyCard">
+    <h1 class="text-2xl"><span class="font-bold">Punti attuali:</span> {{loyaltyCard.points}}</h1>
+  </div>
+  <div class="flex flex-col md:flex-row w-full items-start">
+    <div class="grid flex-grow place-items-start w-full">
+      <div class="flex flex-wrap">
+        <label for="recharge-modal" class="btn btn-primary btn-sm my-3 w-auto mr-1">
+          Ricarica
+        </label>
+        <div>
+          <input (change)="refreshFilter()" [(ngModel)]="minDate" type="date" placeholder="Type here" class="input input-bordered input-sm w-auto my-3 mr-1" />
+        </div>
+        <div>
+          <input (change)="refreshFilter()" [(ngModel)]="maxDate" type="date" placeholder="Type here" class="input input-bordered input-sm w-auto my-3 mr-1" />
+        </div>
+        <div>
+          <select (change)="refreshFilter()" [(ngModel)]="size" class="select select-bordered select-sm my-3 w-auto">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+          </select>
+        </div>
+      </div>
+      <div class="overflow-x-auto w-full">
+        <table class="table w-full">
+          <!-- head -->
+          <thead>
+          <tr>
+            <th style="position: relative">Data Movimento</th>
+            <th>Punti</th>
+            <th>Tipo movimento</th>
+            <th>Premio</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngIf="!movements; else loaded">
+            <tr>
+              <th colspan="500">
+                <div class="text-center my-4">
+                  <svg role="status" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                  </svg>
+                </div>
+              </th>
+            </tr>
+          </ng-container>
+          <ng-template #loaded>
+            <ng-container *ngIf="movements && movements.length > 0; else empty">
+              <tr *ngFor="let movement of movements">
+                <td>{{movement.movementDate | date: 'dd/MM/YYYY'}}</td>
+                <td>{{movement.type === 1 ? '+' : '-'}}{{movement.points}}</td>
+                <td class="text-center">
+                  <fa-icon size="lg" [ngClass]="movement.type === 1 ? 'text-success' : 'text-error' " [icon]="['fas',  movement.type === 1 ? 'arrow-trend-up' : 'arrow-trend-down']"></fa-icon>
+                </td>
+                <td class="text-center">
+                  <ng-container *ngIf="movement.type === 2;else notPrize">
+                    <div class="flex flex-col">
+                      <div class="mx-auto">
+                        <img width="50" src="{{imageUrl}}/{{movement.prize.imageName}}" alt="Shoes" />
+                      </div>
+                      <div>
+                        {{movement.prize.name}}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #notPrize>
+                    ---
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-template #empty>
+              <tr>
+                <td class="text-center my-4" colspan="500">Nessuna movimento trovato</td>
+              </tr>
+            </ng-template>
+          </ng-template>
+          </tbody>
+          <!-- foot -->
+          <tfoot>
+          <tr>
+            <th style="position: relative">Data Movimento</th>
+            <th>Punti</th>
+            <th>Tipo movimento</th>
+            <th>Premio</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="divider md:divider-horizontal"></div>
+    <div class="flex flex-wrap justify-around w-full md:w-1/2">
+      <ng-container  *ngIf="prizes">
+        <div *ngFor="let prize of prizes">
+          <div class="card bg-base-100 shadow-xl m-2 w-[200px]">
+            <figure><img class="max-h-[200px]" width="100%" src="{{imageUrl}}/{{prize.imageName}}" alt="Shoes" /></figure>
+            <div class="card-body">
+              <h2 class="card-title">{{prize.name}}</h2>
+              <p>{{prize.minPoints}} punti</p>
+              <div class="card-actions justify-end">
+                <button (click)="redeem(prize.id)" class="btn btn-primary w-full">Riscatta</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Put this part before </body> tag -->
+<input [(ngModel)]="rechargeModalOpen" type="checkbox" id="recharge-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box relative">
+    <label for="recharge-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h3 class="text-lg font-bold">Ricarica la carta fedeltà</h3>
+    <div *ngIf="rechargeForm" [formGroup]="rechargeForm">
+      <div>
+        <app-form-control for="points" label="Inserire i punti da caricare" controlName="points" class="flex-auto mx-3">
+          <input formControlName="points" [ngClass]="{'input-error': rechargeForm.get('points')?.dirty && rechargeForm.get('points')?.invalid}"
+                 id="points" type="number" placeholder="Inserire punti" class="input input-bordered w-full" />
+        </app-form-control>
+      </div>
+      <div>
+        <button (click)="recharge()" class="btn w-full">Ricarica</button>
+      </div>
+    </div>
+  </div>
+</div>

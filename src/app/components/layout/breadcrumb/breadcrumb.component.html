@@ -1,0 +1,18 @@
+<div class="overflow-y-hidden overflow-x-auto text-sm breadcrumbs mx-4" *ngIf="breadCrumbList && breadCrumbList.length > 1"
+     @slideIn
+     @slideOut>
+  <ul>
+    <li *ngFor="let breadCrumb of breadCrumbList; let i = index">
+      <ng-container *ngIf="i < breadCrumbList.length - 1; else lastElement">
+        <a routerLink="{{breadCrumb.route}}">
+          <fa-icon class="m-1" *ngIf="breadCrumb.icon" [icon]="breadCrumb.icon"></fa-icon>
+          {{breadCrumb.title}}
+        </a>
+      </ng-container>
+      <ng-template #lastElement>
+        <fa-icon class="m-1" *ngIf="breadCrumb.icon" [icon]="breadCrumb.icon"></fa-icon>
+        {{breadCrumb.title}}
+      </ng-template>
+    </li>
+  </ul>
+</div>

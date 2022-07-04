@@ -1,0 +1,12 @@
+<div class="fixed top-0 right-0 pointer-events-none w-full max-w-full md:max-w-md">
+  <div *ngFor="let toast of currentToasts; index as i" @verticalCollapse @triggerChildAnimation>
+    <app-toast
+      @slideIn
+      @slideOut
+      [type]="toast?.type"
+      [title]="toast?.title"
+      [message]="toast.message"
+      (disposeEvent)="dispose(i)"
+    ></app-toast>
+  </div>
+</div>

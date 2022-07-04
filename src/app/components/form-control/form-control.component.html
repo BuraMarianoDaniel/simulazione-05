@@ -1,0 +1,9 @@
+<div class="form-control w-full">
+  <label for="{{for}}" class="label">
+    <span class="label-text" [ngClass]="{'text-error': isDirty() && isInvalid()}">{{label}}</span>
+  </label>
+  <ng-content></ng-content>
+  <label for="{{for}}" class="label">
+    <span *ngIf="isDirty() && isInvalid()" class="label-text-alt text-error">{{getErrorMsg()}}</span>
+  </label>
+</div>
