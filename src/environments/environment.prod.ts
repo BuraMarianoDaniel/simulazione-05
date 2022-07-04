@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8080/api',
-  imageUrl: 'http://localhost:8080/api'
+  apiUrl: 'https://backend-sim-05-bura.azurewebsites.net/api',
+  imageUrl: 'https://backend-sim-05-bura.azurewebsites.net/api'
 };
